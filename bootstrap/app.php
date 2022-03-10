@@ -25,15 +25,15 @@ class app
         // 初始化路由
         $dispatcher = cachedDispatcher('App\Http\Controller\Router::rules', $cacheConfig);
 
-        // 获取请求和PATH
+        // 获取请求和URI
         $httpMethod = $_SERVER['REQUEST_METHOD'];
-        $path = $_SERVER['REQUEST_URI'];
+        $uri = $_SERVER['REQUEST_URI'];
 
-        // 去除URL参数
-        if (false !== $pos = strpos($path, '?')) {
-            $path = substr($path, 0, $pos);
+        // 去除URI请求参数
+        if (false !== $pos = strpos($uri, '?')) {
+            $uri = substr($uri, 0, $pos);
         }
-        $path = rawurldecode($path);
+        $path = rawurldecode($uri);
 
         $routeInfo = $dispatcher->dispatch($httpMethod, $path);
 
