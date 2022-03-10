@@ -25,17 +25,17 @@ class app
         // 初始化路由
         $dispatcher = cachedDispatcher('App\Http\Controller\Router::rules', $cacheConfig);
 
-        // 获取请求和URI
+        // 获取请求和PATH
         $httpMethod = $_SERVER['REQUEST_METHOD'];
-        $uri = $_SERVER['REQUEST_URI'];
+        $path = $_SERVER['REQUEST_URI'];
 
-        // 去除查询字符串(?foo=bar)和解码URI
-        if (false !== $pos = strpos($uri, '?')) {
-            $uri = substr($uri, 0, $pos);
+        // 去除URL参数
+        if (false !== $pos = strpos($path, '?')) {
+            $path = substr($path, 0, $pos);
         }
-        $uri = rawurldecode($uri);
+        $path = rawurldecode($path);
 
-        $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
+        $routeInfo = $dispatcher->dispatch($httpMethod, $path);
 
         switch ($routeInfo[0]) {
             case \FastRoute\Dispatcher::NOT_FOUND:
@@ -54,7 +54,7 @@ class app
                     // 实例化控制器
                     $Controller = new $class;
                     // 调用请求方法前
-                    $onRequest = $Controller->onRequest($action);
+                    $onRequest = $Controller->onRequest($action, $path);
                     // 如果调用请求方法前的回调事件返回结果为true时继续执行
                     if ($onRequest) {
                         // 调用请求方法
