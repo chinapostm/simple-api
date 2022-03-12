@@ -40,11 +40,11 @@ class app
         switch ($routeInfo[0]) {
             case \FastRoute\Dispatcher::NOT_FOUND:
                 // 没有找到路由
-                exit(Response::fail('Not Found', 404, 404));
+                exit(Response::fail(\App\Status::getMsg(404), 404));
                 break;
             case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
                 // Method方法不正确
-                exit(Response::fail('Method Not Allowed', 405, 405));
+                exit(Response::fail(\App\Status::getMsg(405), 405));
                 break;
             case \FastRoute\Dispatcher::FOUND:
                 // 正常匹配
